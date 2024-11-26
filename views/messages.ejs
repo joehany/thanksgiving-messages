@@ -12,7 +12,9 @@
 </head>
 <body class="p-4">
     <div class="container">
-        <h1 class="mb-4">Manage Messages</h1>
+        <h1 class="mb-4">Manage Messages <button class="btn btn-danger float-end" onclick="clearMessages()">
+            Clear All Messages
+        </button></h1>
         <div id="messagesContainer"></div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -34,7 +36,7 @@
                                         Times Displayed: ${msg.displayCount}
                                     </p>
                                     <button class="btn btn-primary" onclick="displayMessage(${index})">
-                                        ${msg.isCurrentlyDisplayed ? 'Re-Display' : 'Display'}
+                                        ${msg.displayed ? 'Re-Display' : 'Display'}
                                     </button>
                                 </div>
                             </div>`;
@@ -52,6 +54,15 @@
 
         socket.on('updateMessages', fetchMessages);
         fetchMessages();
+
+        const clearMessages = () => {
+            // window.confirm('Are you sure you want to permanentely delete all messages?');
+            if (confirm('Are you sure you want to permanentely delete all messages?')) {
+                fetch('/api/messages/clear', {
+                    method: 'POST',
+                }).then(fetchMessages);
+             }
+        };
     </script>
 </body>
 </html>

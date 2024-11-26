@@ -39,6 +39,14 @@ app.post('/api/messages', (req, res) => {
     io.emit('updateMessages');
 });
 
+// API: clear all messages
+app.post('/api/messages/clear', (req, res) => {
+    saveMessages([]);
+    res.json({ status: 'success' });
+    io.emit('updateMessages');
+    io.emit('updateDisplay');
+});
+
 // API: Display a message
 app.post('/api/messages/display', (req, res) => {
     const { index } = req.body;
