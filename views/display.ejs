@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #displayMessage {
+            word-wrap: break-word;
+            line-height: 1.2;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: hidden;
+        }
+    </style>
+    <title>Display</title>
+</head>
+<body>
+    <div id="displayMessage">Waiting for a message...</div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const displayContainer = document.getElementById('displayMessage');
+
+        const fetchDisplayMessage = () => {
+            fetch('/api/messages')
+                .then(res => res.json())
+                .then(messages => {
+                    const currentMessage = messages.find(msg => msg.isCurrentlyDisplayed);
+                    const messageText = currentMessage ? currentMessage.content : 'Waiting for a message...';
+                    displayContainer.innerText = messageText;
+                    fitTextToContainer();
+                });
+        };
+
+        const fitTextToContainer = () => {
+            const container = displayContainer;
+            let fontSize = 100; // Start with a large font size
+            container.style.fontSize = `${fontSize}px`;
+
+            // Reduce the font size until the text fits within the container
+            while (
+                container.scrollHeight > container.clientHeight ||
+                container.scrollWidth > container.clientWidth
+            ) {
+                fontSize -= 1;
+                container.style.fontSize = `${fontSize}px`;
+            }
+        };
+
+        socket.on('updateDisplay', fetchDisplayMessage);
+        fetchDisplayMessage();
+    </script>
+</body>
+</html>
