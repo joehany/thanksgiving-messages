@@ -1,25 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <title>Submit Message</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 150px;
+            margin: 0 auto 20px auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        textarea {
+            font-size: 1.2rem;
+            height: 150px;
+            resize: none;
+            border: none;
+            outline: none;
+            height: calc(100vh - 200px)
+        }
+
+        button {
+            font-size: 1.5rem;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        button:active {
+            background-color: #1e7e34;
+        }
+    </style>
 </head>
-<body class="p-4">
+<body>
     <div class="container">
-        <h1 class="mb-4">Submit a Message</h1>
-        <textarea id="messageInput" class="form-control mb-3" rows="5" placeholder="Type your message..."></textarea>
-        <button id="submitBtn" class="btn btn-primary w-100">Submit</button>
+        <!-- <h1><img src="/images/logo.png" alt="Logo" class="logo">  Submit a Message</h1> -->
+        <h1>Submit a Message</h1>
+
+        <form id="messageForm">
+            <div class="mb-3">
+                <textarea class="form-control" id="messageInput" placeholder="Type your message here..."></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
     </div>
+
     <script>
-        document.getElementById('submitBtn').addEventListener('click', () => {
-            const content = document.getElementById('messageInput').value;
+        const form = document.getElementById('messageForm');
+        const messageInput = document.getElementById('messageInput');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const content = messageInput.value.trim();
+
+            if (!content) {
+                alert('Please enter a message!');
+                return;
+            }
+
             fetch('/api/messages', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content })
+                body: JSON.stringify({ content }),
             }).then(() => {
-                document.getElementById('messageInput').value = '';
-                alert('Message submitted successfully!');
+                messageInput.value = ''; // Clear input
+                alert('Message sent successfully!');
             });
         });
     </script>
