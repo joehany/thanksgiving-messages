@@ -1,6 +1,18 @@
 [
   {
-    "content": "sdasdsadsad",
+    "content": "الهنا صالح",
+    "displayed": true,
+    "isCurrentlyDisplayed": false,
+    "displayCount": 1
+  },
+  {
+    "content": "God is Good!",
+    "displayed": false,
+    "isCurrentlyDisplayed": false,
+    "displayCount": 0
+  },
+  {
+    "content": "جهز حاجة / حاجات في قلبك وعقلك علشان تشكر ربنا عليها النهارده في الكنيسة \n\nLet's Give Thanks to our LORD, and share your message here\n Happy Thanksgiving",
     "displayed": true,
     "isCurrentlyDisplayed": true,
     "displayCount": 1

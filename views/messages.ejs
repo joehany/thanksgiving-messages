@@ -6,20 +6,28 @@
     <style>
         .current {
             border: 2px solid green;
-            background-color: #e9ffe9;
+            background-color: #e9ffe9; /* Highlight currently displayed messages */
+        }
+
+        .not-displayed {
+            border: 2px solid orange;
+            background-color: #fff8e1; /* Highlight messages not displayed yet */
         }
     </style>
 </head>
 <body class="p-4">
     <div class="container">
-        <h1 class="mb-4">Manage Messages <button class="btn btn-danger float-end" onclick="clearMessages()">
-            Clear All Messages
-        </button></h1>
+        <h1 class="mb-4">Manage Messages 
+            <button class="btn btn-danger float-end" onclick="clearMessages()">
+                Clear All Messages
+            </button>
+        </h1>
         <div id="messagesContainer"></div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
+
         const fetchMessages = () => {
             fetch('/api/messages')
                 .then(res => res.json())
@@ -27,8 +35,14 @@
                     const container = document.getElementById('messagesContainer');
                     container.innerHTML = '';
                     messages.forEach((msg, index) => {
+                        const cardClass = msg.isCurrentlyDisplayed 
+                            ? 'current' 
+                            : !msg.displayed 
+                                ? 'not-displayed' 
+                                : '';
+
                         container.innerHTML += `
-                            <div class="card mb-2 ${msg.isCurrentlyDisplayed ? 'current' : ''}">
+                            <div class="card mb-2 ${cardClass}">
                                 <div class="card-body">
                                     <p>${msg.content}</p>
                                     <p>
@@ -56,12 +70,11 @@
         fetchMessages();
 
         const clearMessages = () => {
-            // window.confirm('Are you sure you want to permanentely delete all messages?');
-            if (confirm('Are you sure you want to permanentely delete all messages?')) {
+            if (confirm('Are you sure you want to permanently delete all messages?')) {
                 fetch('/api/messages/clear', {
                     method: 'POST',
                 }).then(fetchMessages);
-             }
+            }
         };
     </script>
 </body>

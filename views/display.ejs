@@ -37,7 +37,7 @@
                 .then(res => res.json())
                 .then(messages => {
                     const currentMessage = messages.find(msg => msg.isCurrentlyDisplayed);
-                    const messageText = currentMessage ? currentMessage.content : 'Waiting for a message...';
+                    const messageText = currentMessage ? currentMessage.content : "جهز حاجة / حاجات في قلبك وعقلك علشان تشكر ربنا عليها النهارده في الكنيسة \n\nLet's Give Thanks to our LORD, and share your message here\n Happy Thanksgiving";
                     displayContainer.innerText = messageText;
                     fitTextToContainer();
                 });
